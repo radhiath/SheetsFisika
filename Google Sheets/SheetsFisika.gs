@@ -25,3 +25,33 @@ function hitungKSR(rataRata, delta, angkaBlkgKoma=2) {
   return persen;
 }
 
+function hitungHasil(x, deltaX, KSR, style="default") {
+  let formatX, formatDeltaX;
+  let desimal = Number(KSR.split(" ")[1][1]) - 1;
+
+  function toSuperScript(eksponen) {
+    const superscriptMap = {
+      "0": "⁰",
+      "1": "¹",
+      "2": "²",
+      "3": "³",
+      "4": "⁴",
+      "5": "⁵",
+      "6": "⁶",
+      "7": "⁷",
+      "8": "⁸",
+      "9": "⁹",
+      "-": "⁻"
+    };
+    return eksponen.split("").map((char) => superscriptMap[char] || char).join("");
+  }
+
+  formatX = String(x.toExponential(desimal)).replace("+", "").replace("e0", "");
+  formatDeltaX = String(deltaX.toExponential(desimal)).replace("+", "").replace("e0", "");
+
+  if (style === "default") {
+    formatX = formatX.replace(/e(\-?\d+)/, (_, exp) => " ⋅ 10" + toSuperScript(exp));
+    formatDeltaX = formatDeltaX.replace(/e(\-?\d+)/, (_, exp) => " ⋅ 10" + toSuperScript(exp));
+    return "(" + formatX + " ± " + formatDeltaX + ")";
+  }
+}
