@@ -1,39 +1,4 @@
 Attribute VB_Name = "Module1"
-Public Function K(RataRata As Double, Delta As Double, Optional Mode As String = "Default") As String
-    Dim Desimal As Double: Desimal = Delta / RataRata
-    Dim Persen As String
-    Dim criteriaValues() As Double
-    Dim criteriaLabels() As String
-    
-    ' Tentukan set nilai dan label berdasarkan mode
-    Select Case Mode
-        Case "CustomSet"
-            ' Set nilai dan label sesuai kebutuhan
-            criteriaValues = Array(0.1, 1, 10, 100)
-            criteriaLabels = Array(" (4 AP)", " (3 AP)", " (2 AP)", " (1 AP / ERROR)")
-        Case Else
-            ' Gunakan set nilai dan label default
-            criteriaValues = Array(0.001, 0.01, 0.1, 1)
-            criteriaLabels = Array(" (4 AP)", " (3 AP)", " (2 AP)", " (1 AP / ERROR)")
-    End Select
-    
-    ' Hitung persentase
-    Persen = Format(Desimal, "0.00 %")
-    Persen = Replace(Persen, ".", ",") ' Ganti titik jd koma
-    
-    ' Evaluasi kriteria
-    Dim i As Integer
-    For i = LBound(criteriaValues) To UBound(criteriaValues)
-        If Desimal <= criteriaValues(i) Then
-            K = Persen & criteriaLabels(i)
-            Exit Function
-        End If
-    Next i
-    
-    ' Jika Desimal melebihi semua set nilai
-    K = "LAH GEDE AMAT, KOCAK NI ORANG, CEK LAGI"
-End Function
-
 '========== PENGOLAHAN DATA ==========
 ' 1. Menghitung Ketidakpastian dengan banyak data n
 Public Function Delta_n(SigmaX As Double, SigmaKuadratX As Double, Optional n As Integer = 5) As Double
@@ -136,17 +101,17 @@ Public Function Hasil(RataRata As Double, Delta As Double, AP As String, Optiona
     'Penulisan = LCase(Penulisan)
     
     If LCase(Penulisan) = "std" Then
-        FormatRata = Replace(FormatRata, "E", " × 10^")
-        FormatDelta = Replace(FormatDelta, "E", " × 10^")
-        Hasil = "(" & FormatRata & " ± " & FormatDelta & ")"
+        FormatRata = Replace(FormatRata, "E", " Ã— 10^")
+        FormatDelta = Replace(FormatDelta, "E", " Ã— 10^")
+        Hasil = "(" & FormatRata & " Â± " & FormatDelta & ")"
     ElseIf LCase(Penulisan) = "dev" Then
         FormatRata = Replace(FormatRata, "E", "\bullet10^")
         FormatDelta = Replace(FormatDelta, "E", "\bullet10^")
-        Hasil = "(" & FormatRata & "±" & FormatDelta & ")"
+        Hasil = "(" & FormatRata & "Â±" & FormatDelta & ")"
     End If
     
-    If InStr(Hasil, " × 10^0") Or InStr(Hasil, "\bullet10^0") Then
-        Hasil = Replace(Hasil, " × 10^0", "")
+    If InStr(Hasil, " Ã— 10^0") Or InStr(Hasil, "\bullet10^0") Then
+        Hasil = Replace(Hasil, " Ã— 10^0", "")
         Hasil = Replace(Hasil, "\bullet10^0", "")
     End If
 
@@ -295,8 +260,8 @@ Public Function yRegLin(MRegLin As String, BRegLin As String, Optional Penulisan
     End If
     
     If LCase(Penulisan) = "std" Then
-        FormatMRegLin = Replace(FormatMRegLin, "E", " × 10^")
-        FormatBRegLin = Replace(FormatBRegLin, "E", " × 10^")
+        FormatMRegLin = Replace(FormatMRegLin, "E", " Ã— 10^")
+        FormatBRegLin = Replace(FormatBRegLin, "E", " Ã— 10^")
         
        
     ElseIf LCase(Penulisan) = "dev" Then
@@ -311,8 +276,8 @@ Public Function yRegLin(MRegLin As String, BRegLin As String, Optional Penulisan
         yRegLin = "(" & FormatMRegLin & ")" & "x" & " - " & "(" & LStripByChar(FormatBRegLin, "-") & ")"
     End If
 
-    If InStr(yRegLin, " × 10^0") Or InStr(yRegLin, "\bullet10^0") Then
-        yRegLin = Replace(yRegLin, " × 10^0", "")
+    If InStr(yRegLin, " Ã— 10^0") Or InStr(yRegLin, "\bullet10^0") Then
+        yRegLin = Replace(yRegLin, " Ã— 10^0", "")
         yRegLin = Replace(yRegLin, "\bullet10^0", "")
     End If
 
@@ -387,18 +352,18 @@ Public Function HasilRegLin(x As Double, DeltaX As Double, Optional Penulisan As
     FormatDeltaX = Replace(FormatDeltaX, "+", "")
     
     If LCase(Penulisan) = "std" Then
-        Formatx = Replace(Formatx, "E", " × 10^")
-        FormatDeltaX = Replace(FormatDeltaX, "E", " × 10^")
-        HasilRegLin = "(" & Formatx & " ± " & FormatDeltaX & ")"
+        Formatx = Replace(Formatx, "E", " Ã— 10^")
+        FormatDeltaX = Replace(FormatDeltaX, "E", " Ã— 10^")
+        HasilRegLin = "(" & Formatx & " Â± " & FormatDeltaX & ")"
        
     ElseIf LCase(Penulisan) = "dev" Then
         Formatx = Replace(Formatx, "E", "\bullet10^")
         FormatDeltaX = Replace(FormatDeltaX, "E", "\bullet10^")
-        HasilRegLin = "(" & Formatx & "±" & FormatDeltaX & ")"
+        HasilRegLin = "(" & Formatx & "Â±" & FormatDeltaX & ")"
     End If
     
-    If InStr(HasilRegLin, " × 10^0") Or InStr(HasilRegLin, "\bullet10^0") Then
-        HasilRegLin = Replace(HasilRegLin, " × 10^0", "")
+    If InStr(HasilRegLin, " Ã— 10^0") Or InStr(HasilRegLin, "\bullet10^0") Then
+        HasilRegLin = Replace(HasilRegLin, " Ã— 10^0", "")
         HasilRegLin = Replace(HasilRegLin, "\bullet10^0", "")
     End If
 End Function
@@ -605,8 +570,8 @@ Public Function REGRESI_LINEAR_2(ByRef RangeDataX As Range, ByRef RangeDataY As 
         Hasil(4, 5) = DeltamRegLin
         Hasil(5, 5) = DeltabRegLin
         
-        Hasil(4, 7) = "(m ± " & ChrW(&H394) & "m)"
-        Hasil(5, 7) = "(c ± " & ChrW(&H394) & "c)"
+        Hasil(4, 7) = "(m Â± " & ChrW(&H394) & "m)"
+        Hasil(5, 7) = "(c Â± " & ChrW(&H394) & "c)"
         Hasil(4, 8) = HasilRegLin(HasilmRegLin, DeltamRegLin)
         Hasil(5, 8) = HasilRegLin(HasilbRegLin, DeltabRegLin)
         For i = LBound(Hasil, 1) To UBound(Hasil, 1)
