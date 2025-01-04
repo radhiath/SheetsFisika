@@ -1,17 +1,29 @@
-function hitungDeltaN(sigmaX, sigma2X, n) {
-  return (1 / n) * Math.sqrt((n * sigma2X - sigmaX ^ 2) / (n - 1));
+function hitungDeltaN(sigmaX, sigmaX2, n) {
+  let hasil = (1 / n) * Math.sqrt((n * sigmaX2 - sigmaX ** 2) / (n - 1));
+  if (isNaN(hasil)) {
+    hasil = 0;
+  }
+  return hasil;
 }
 
-function hitungDelta3(sigmaX, sigma2X) {
-  return (1 / 3) * Math.sqrt((3 * sigma2X - sigmaX ^ 2) / (3 - 1));
+function hitungDelta3(sigmaX, sigmaX2) {
+  let hasil = (1 / 3) * Math.sqrt((3 * sigmaX2 - sigmaX ** 2) / (3 - 1));
+  if (isNaN(hasil)) {
+    hasil = 0;
+  }
+  return hasil;
 }
 
-function hitungDelta5(sigmaX, sigma2X) {
-  return (1 / 5) * Math.sqrt((5 * sigma2X - sigmaX ^ 2) / (5 - 1));
+function hitungDelta5(sigmaX, sigmaX2) {
+  let hasil = (1 / 5) * Math.sqrt((5 * sigmaX2 - sigmaX ** 2) / (5 - 1));
+  if (isNaN(hasil)) {
+    hasil = 0;
+  }
+  return hasil;
 }
 
-function hitungKSR(rataRata, delta, angkaBlkgKoma=2) {
-  let desimal = delta / rataRata;
+function hitungKSR(x, deltaX, angkaBlkgKoma=2) {
+  let desimal = deltaX / x;
   let persen = (desimal * 100).toFixed(angkaBlkgKoma) + "%";
   
   if (desimal <= 0.001) persen += " (4 AP)";
@@ -53,5 +65,31 @@ function hitungHasil(x, deltaX, KSR, style="default") {
     formatX = formatX.replace(/e(\-?\d+)/, (_, exp) => " ⋅ 10" + toSuperScript(exp));
     formatDeltaX = formatDeltaX.replace(/e(\-?\d+)/, (_, exp) => " ⋅ 10" + toSuperScript(exp));
     return "(" + formatX + " ± " + formatDeltaX + ")";
+
+  } else if (style === "unicode") {
+    expX = formatX.split("e")[1];
+    expDeltaX = formatDeltaX.split("e")[1];
+    formatX = formatX.replace(`e${expX}`, `\\bullet10^(${expX})`);
+    formatDeltaX = formatDeltaX.replace(`e${expDeltaX}`, `\\bullet10^(${expDeltaX})`);
+    return "(" + formatX + "±" + formatDeltaX + ")";
+  
+  } else if (style === "latex") {
+    expX = formatX.split("e")[1];
+    expDeltaX = formatDeltaX.split("e")[1];
+    formatX = formatX.replace(`e${expX}`, `\\bullet10^{${expX}}`);
+    formatDeltaX = formatDeltaX.replace(`e${expDeltaX}`, `\\bullet10^{${expDeltaX}}`);
+    return "(" + formatX + " ± " + formatDeltaX + ")";
   }
+}
+
+function hitungAGrafik(n, sigmaX, sigmaY, sigmaX2, sigmaXY) {
+  return ((sigmaY * sigmaX2) - (sigmaX * sigmaXY)) / ((n * sigmaX2) - (sigmaX ** 2)) ;
+}
+
+function hitungBGrafik(n, sigmaX, sigmaY, sigmaX2, sigmaXY) {
+  return ((n * sigmaXY) - (sigmaX * sigmaY)) / ((n * sigmaX2) - (sigmaX ** 2)) ;
+}
+
+function hitungYGrafik(a, b, x) {
+  return a + b * x;
 }
